@@ -7,18 +7,38 @@ import datetime
 
 
 class ImportData:
+
     def __init__(self, data_csv):
         self._time = []
         self._value = []
+        self._roundtime = []
+        self._roundtimeStr = []
 
         # open file, create a reader from csv.DictReader, and read input times and values
+        with open(data_csv, 'r') as fhandle:
+            reader = csv.DictReader(fhandle)
+            for row in reader:
+                try:
+                    self._time.append(dateutil.parser.parse(row['time']))
+                except ValueError:
+                    print('Bad input format for time')
+                    print(row['time'])
+                self._value.append(row['value'])
+            fhandle.close()
+
+        self.roundTime(5)
 
     def linear_search_value(self, key_time):
-        # return list of value(s) associated with key_time
-        # if none, return -1 and error message
+        for i in range(len(self._roundtimeStr)):
+            curr = self._roundtimeStr[i]
+            if key_time == curr: # return list of vals associated with key_time
+                return self._value[i]
+        print ('invalid time')
+        return -1 # if none, return -1 and error message
 
-    def binary_search_value(self,key_time):
-        # optional extra credit
+    def binary_search_value(self,key_time): # optional extra credit
+        for i in range(l)
+
         # return list of value(s) associated with key_time
         # if none, return -1 and error message
 

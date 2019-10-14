@@ -7,20 +7,61 @@ import datetime
 
 
 class ImportData:
+
     def __init__(self, data_csv):
         self._time = []
         self._value = []
+        self._roundtime = []
+        self._roundtimeStr = []
 
-        # open file, create a reader from csv.DictReader, and read input times and values
+        # open file, create reader from csv.DictReader, read input times + vals
+        with open(data_csv, 'r') as fhandle:
+            reader = csv.DictReader(fhandle)
+            for row in reader:
+                if row['time'] = 'low':
+                    row['time'] = 40
+                    print('replacing low string found in file with 40')
+
+                else:
+                    if row['time'] = 'high':
+                        row['time'] = 300
+                        print('replacing high string found in file with 300')
+                try:
+                    self._time.append(dateutil.parser.parse(row['time']))
+
+                except ValueError:
+                    print('Bad input format for time')
+                    print(row['time'])
+                self._value.append(row['value'])
+            fhandle.close()
+
+        self.roundTime(5)
 
     def linear_search_value(self, key_time):
-        # return list of value(s) associated with key_time
+        for i in range(len(self._roundtimeStr)):
+            curr = self._roundtimeStr[i]
+            if key_time == curr:  #return list of vals associated with key_time
+                return self._value[i]
+            else:
+                print('invalid time')
+        return -1
+
+    def binary_search_value(self,key_time): # optional extra credit
+        lo = -1
+        hi = len(self._roundtimeStr)
+        while (hi - lo > 1):
+            mid = (hi + lo) // 2
+
+            if key_time == self._roundtimeStr[mid][0]:
+                return self._roundtimeStr[mid][1]
+
+            if (key_time < self._roundtimeStr[mid][0]):
+                hi = mid
+            else:
+                lo = mid
+        return -1
         # if none, return -1 and error message
 
-    def binary_search_value(self,key_time):
-        # optional extra credit
-        # return list of value(s) associated with key_time
-        # if none, return -1 and error message
 
 def roundTimeArray(obj, res):
     # Inputs: obj (ImportData Object) and res (rounding resoultion)

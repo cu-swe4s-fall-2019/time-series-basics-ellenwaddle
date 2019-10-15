@@ -6,9 +6,7 @@ import os
 
 class TestDataImport(unittest.TestCase):
 
-    def test_data_import_strings(self):
-        f = ImportData(cgm_small.csv)
-        assertEquals()
+    def test_data_print_array_(self):
 
 
 if __name__ == '__main__':

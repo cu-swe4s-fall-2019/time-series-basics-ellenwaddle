@@ -62,7 +62,7 @@ class ImportData:
         return -1
         # if none, return -1 and error message
 
-    def roundTimeArray(obj, res):
+    def roundTimeArray(obj, resolution):
 
         filename = fhandle[-6]
         dups_to_sum = ['activity', 'bolus', 'meals']
@@ -90,13 +90,44 @@ class ImportData:
                 else:
                     print('decide how to handle duplicates in your file')
 
-        iterable_zip = [self._roundtime, self._value]
+        iterable_zip = zip(self._roundtime, self._value)
 
         return
             iterable_zip
 
 def printArray(data_list, annotation_list, base_name, key_file):
     # combine and print on the key_file
+    base_data = []
+    key_idx = 0
+    for i in range(len(annotation_list)):
+        if annotation_list[i]= key_file:
+            base_data=zip(data_list[i]._roundtimeStr, data_list[i]._value)
+            print('base data is: '+annotation_list[i])
+            key_idx = i
+            break
+        if i == len(annotation_list):
+            print('Key not found')
+    file = open(base_name +'.csv','w')
+    file.write('time,')
+
+    file.write(annotation_list[key_idx][0:-4]+',')
+
+    non_key = list(range(len(annotation_list)))
+    non_key.remove(key_idx)
+
+    for idx in non_key:
+        file.write(annotation_list[idx][0:-4]+',')
+    file.write('\n')
+
+    for time,value in base_data:
+        file.write(time+','+value+',')
+        for n in non_key:
+            if time in data_list[n]._roundtimeStr:
+                file.write(str(data_list[n].linear_search_value(time))+',')
+            else:
+                file.write('0,')
+        file.write('\n')
+    file.close()
 
 if __name__ == '__main__':
 
@@ -117,17 +148,22 @@ if __name__ == '__main__':
 
 
     #pull all the folders in the file
-    files_lst = # list the folders
-
+    files_lst = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
 
     #import all the files into a list of ImportData objects (in a loop!)
     data_lst = []
+    for files in files_lst:
+        data_lst.append(ImportData(folder_path + files))
 
     #create two new lists of zip objects
     # do this in a loop, where you loop through the data_lst
-    data_5 = [] # a list with time rounded to 5min
-    data_15 = [] # a list with time rounded to 15min
+    data_5 = []  # a list with time rounded to 5min
+    data_15 = []  # a list with time rounded to 15min
+    for data in data_lst:
+        data_5.append(roundTimeArray(obj, 5))
+    for data in data_list:
+        data_15.append(roundTimeArray(obj, 15))
 
     #print to a csv file
-    printLargeArray(data_5,files_lst,args.output_file+'_5',args.sort_key)
-    printLargeArray(data_15, files_lst,args.output_file+'_15',args.sort_key)
+    printLargeArray(data_5,files_lst, args.output_file+'_5', cgm_small.csv)
+    printLargeArray(data_15, files_lst, args.output_file+'_15', cgm_small.csv)

@@ -62,19 +62,38 @@ class ImportData:
         return -1
         # if none, return -1 and error message
 
+    def roundTimeArray(obj, res):
 
-def roundTimeArray(obj, res):
-    # Inputs: obj (ImportData Object) and res (rounding resoultion)
-    # objective:
-    # create a list of datetime entries and associated values
-    # with the times rounded to the nearest rounding resolution (res)
-    # ensure no duplicated times
-    # handle duplicated values for a single timestamp based on instructions in
-    # the assignment
-    # return: iterable zip object of the two lists
-    # note: you can create additional variables to help with this task
-    # which are not returned
+        filename = fhandle[-6]
+        dups_to_sum = ['activity', 'bolus', 'meals']
+        dups_to_avg = ['meal', 'hr', 'cgm']
 
+        for times in self._time:
+            minminus = datetime.timedelta(minutes = times.minute % resolution))
+            minplus = datetime.timedelta(minutes = resolution) - minminus
+            if (times.minute % resolution) <= resolution/2:
+                newtime = times - minminus
+            else:
+                newtime = times + minplus
+
+            value = binary_search_value(self._roundtime, newtime)
+
+            if value = -1:
+                self._roundtime.append(newtime)
+                self._roundtimeStr.append(newtime.strftime('%m/%d/%Y %H:%M'))
+
+            else:
+                if filename in dups_to_sum:
+                    self._value[i] = self._value[i] + value
+                if filename in dups_to_avg:
+                    self._value[i] = (self._value[i] + value) / 2
+                else:
+                    print('decide how to handle duplicates in your file')
+
+        iterable_zip = [self._roundtime, self._value]
+
+        return
+            iterable_zip
 
 def printArray(data_list, annotation_list, base_name, key_file):
     # combine and print on the key_file

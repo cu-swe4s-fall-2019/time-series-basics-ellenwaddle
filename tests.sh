@@ -1,4 +1,4 @@
-test -e ssshtst || wget -qhttps://raw.githubusercontent.com/ryanlayer/ssshtest/mater/ssshtest
+test -e ssshtst || wget -q https://raw.githubusercontent.com/ryanlayer/ssshtest/mater/ssshtest
 . ssshtst
 
 run test_pycodestyle_di pycodestyle data_import.py

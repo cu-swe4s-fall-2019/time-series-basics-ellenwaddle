@@ -91,22 +91,22 @@ joinFrame.drop(columns=['Id_y'], inplace = True)
 joinFrame.drop(columns=['patient_x'], inplace = True)
 joinFrame.drop(columns=[' With meal'], inplace = True)
 joinFrame.drop(columns=['patient_y'], inplace = True)
-joinFrame.drop(columns=['patient_x'], inplace = True)
+#joinFrame.drop(columns=['patient_x'], inplace = True)
 joinFrame.drop(columns=['id'], inplace = True)
 
 
 #group by
 # sum: activity, bolus, meal
 # avg: smbg, hr, cgm, basal
-five_sum = joinFrame.groupby('five')[['activity', 'bolus', 'meal']]
-fifteen_sum = joinFrame.groupby('fifteen')[['activity', 'bolus', 'meal']]
+five_sum = joinFrame.groupby('five')[['activity', 'bolus', 'meal']].sum()
+fifteen_sum = joinFrame.groupby('fifteen')[['activity', 'bolus', 'meal']].sum()
 
-five_avg = joinFrame.groupby('five')[['smbg', 'hr', 'cgm', 'basal']]
-fifteen_avg = joinFrame.groupby('fifteen')[['smbg', 'hr', 'cgm', 'basal']]
+five_avg = joinFrame.groupby('five')[['smbg', 'hr', 'cgm', 'basal']].mean()
+fifteen_avg = joinFrame.groupby('fifteen')[['smbg', 'hr', 'cgm', 'basal']].mean()
 
 #merge two dfs and then write to CSV files
-fives = five_sum.join([five_avg], how = 'outer')
-fifteens = five_sum.join([fifteen_avg], how = 'outer')
+fives = five_sum.join([five_avg], how = 'left')
+fifteens = five_sum.join([fifteen_avg], how = 'left')
 
 fives.to_csv('grouped_by_five.csv', index = True , header = True )
 fifteens.to_csv('grouped_by_fifteen.csv', index = True , header = True )
